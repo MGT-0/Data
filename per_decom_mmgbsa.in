@@ -1,0 +1,14 @@
+Per-residue GB and PB decomposition
+&general
+   startframe=1, endframe=20000, interval=10, 
+   verbose=1, keep_files=0
+/
+&gb
+  igb=5, saltcon=0.100,
+
+/
+&decomp
+   idecomp=1, print_res="158, 159, 170, 340, 343, 346, 358, 378, 379"
+  dec_verbose=1,
+/
+

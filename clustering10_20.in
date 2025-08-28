@@ -1,0 +1,17 @@
+parm clean_6mdx_sol.prmtop
+trajin mdcrd.prod1
+reference 6mdx_min2.rst7
+autoimage
+strip :WAT,Na+,Cl-
+rms reference :1-375@C,CA,N
+
+# 10 clusters
+cluster kmeans clusters 10 random \
+    out cluster10.dat summary summary10.dat \
+    repout rep10.pdb
+
+# 20 clusters
+cluster kmeans clusters 20 random \
+    out cluster20.dat summary summary20.dat \
+    repout rep20.pdb
+

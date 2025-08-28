@@ -1,0 +1,52 @@
+parm Trial21_solvated.prmtop
+trajin Trial21_prod.nc
+center
+autoimage
+
+rms first @CA mass
+
+average crdset avg_set
+createcrd traj_set
+run
+
+crdaction traj_set rms ref avg_set @CA
+
+# Write covariance matrix based on the selection of residues
+crdaction traj_set matrix covar :1-208@CA name pro_covar out covmat.dat
+
+# Write 100 principal components and generate .nmd for VMD Normal Mode Wizard
+runanalysis diagmatrix pro_covar out evecs.dat vecs 100 name myevecs \
+nmwiz nmwizvecs 100 nmwizfile porcupine.nmd nmwizmask :1-208@CA
+
+# Output eigenvalues, fraction of contribution, cumulative contributions of PCs
+runanalysis modes eigenval name myevecs out evalfrac.dat  # generates evalfrac.dat
+
+# RMSF (fluctuations) of first 10 PCs
+runanalysis modes fluct out rmsfluct1-10.dat name myevecs beg 1 end 10
+
+# RMSF of first 2 PCs
+runanalysis modes fluct out rmsfluct1-2.dat name myevecs beg 1 end 2
+
+# RMSF of only the first PC
+runanalysis modes fluct out rmsfluct-mode1.dat name myevecs beg 1
+
+# Projection of first 20 PCs
+crdaction traj_set projection p1 modes myevecs beg 1 end 20 :1-208@CA out pca.dat
+
+# Projection of first 2 PCs for FEL plotting
+crdaction traj_set projection p2 modes myevecs beg 1 end 2 :1-208@CA out pca12.dat
+
+# The pca12.dat file can be visualized in xmgrace or used to generate FEL plots
+
+
+#To generate the Free energy landscape (FEL) plots, u need to convert the PCA12.dat file i.e. the projection file to gibbs.txt. For this u need gromacs installed in your system and then follow the #following steps.
+#convert the pca12.dat into pca12.xvg by changing the extention
+
+#gmx sham -f pca12.xvg -ls gibbs.xpm -notime #for free energy, "sham" module uses PC1 and PC2 file
+
+#gmx xpm2ps -f gibbs.xpm  -o gibbs.eps -rainbow red # do this for all xpm files like gibbs12, gibbs13 and gibbs23
+
+#python xpm2txt.py -f gibbs.xpm -o gibbs.txt #generate all the txt file for gibbs12, 13 and 23, needed for generating 2d and 3d graphs
+
+#python3 FEL-3D.py
+#python3 FEL-2D.py

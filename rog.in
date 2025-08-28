@@ -1,0 +1,14 @@
+parm clean_6mdx_sol.prmtop
+trajin mdcrd.prod1 
+
+# Fix periodic boundary condition issues
+autoimage
+
+# Remove solvent and ions to analyze only the protein
+strip :WAT,Na+,Cl-
+
+# Compute Radius of Gyration (Rg) for the whole protein
+radgyr :1-381 out Rg_complex.dat mass
+
+# Execute the commands
+go
