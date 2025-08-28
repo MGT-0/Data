@@ -1,6 +1,0 @@
-parm clean_6mdx_sol.prmtop
-trajin mdcrd.prod1 
-autoimage
-strip :WAT,Na+,Cl-
-surf 1:381 out sasa_complex_.dat
-go
