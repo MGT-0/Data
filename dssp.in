@@ -1,0 +1,4 @@
+parm Trial21_solvated.prmtop
+trajin Trial21_prod.nc
+secstruct :185-208 out trial21.dssp.dat sumout trial21.dssp.summary
+

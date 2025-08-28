@@ -1,0 +1,11 @@
+parm clean_6mdx_sol.prmtop
+trajin mdcrd.prod1 
+reference 6mdx_min2.rst7
+autoimage
+strip :WAT,Na+,Cl-
+rms :1-381 reference out complex_rms.dat
+rms :1-381@C,CA,N reference out complex_bbrms.dat
+rms :1-381@CA reference out complex_CA_rms.dat
+
+atomicfluct out complex-RMSF-protein-CA ':1-381 & @CA' byres
+go
